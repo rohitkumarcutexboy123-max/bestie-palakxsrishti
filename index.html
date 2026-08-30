@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Ultimate Main Character Scrapbook 💖✨</title>
+  
+  <!-- Y2K & Retro Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Outfit:wght@400;600;800;900&family=Shrikhand&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-warm: #FDF8F2;
+      --paper-card: rgba(255, 252, 248, 0.95);
+      --cherry-red: #7A0016;
+      --hot-pink: #FF2A85;
+      --soft-pink: #FFB7C5;
+      --yellow-tag: #FFDE59;
+      --green-tag: #7ED957;
+      --text-dark: #2B1810;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-warm);
+      background-image: radial-gradient(rgba(122, 0, 22, 0.06) 1.5px, transparent 0);
+      background-size: 24px 24px;
+      color: var(--text-dark);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* CONTINUOUS BACKGROUND EMOJI SHOWER */
+    .bg-emoji-container {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 1; overflow: hidden;
+    }
+    .bg-shower-item {
+      position: absolute; font-size: 1.6rem; opacity: 0.6;
+      animation: floatUp 6s linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(105vh) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Hand-Drawn Dotted Line Connector */
+    .dotted-path {
+      border-left: 3px dashed var(--hot-pink);
+      height: 35px; margin: 10px auto; width: 0;
+    }
+
+    /* Trending Gen-Z Stickers */
+    .sticker {
+      position: absolute; z-index: 25; font-weight: 800; font-size: 0.75rem;
+      padding: 6px 14px; border-radius: 20px; text-transform: uppercase;
+      letter-spacing: 1px; box-shadow: 3px 5px 12px rgba(0,0,0,0.12);
+      border: 2px solid #fff; animation: wiggle 3s ease-in-out infinite alternate;
+      font-family: 'Shrikhand', cursive; pointer-events: none;
+    }
+    @keyframes wiggle {
+      0% { transform: rotate(-6deg) scale(0.98); }
+      100% { transform: rotate(6deg) scale(1.04); }
+    }
+    .st-cherry { background: var(--cherry-red); color: #fff; }
+    .st-pink { background: var(--hot-pink); color: #fff; }
+    .st-yellow { background: var(--yellow-tag); color: #000; }
+    .st-green { background: var(--green-tag); color: #000; }
+
+    /* Audio Control Pill */
+    .audio-btn {
+      position: fixed; top: 20px; right: 20px; z-index: 1000;
+      background: var(--paper-card); border: 2px solid var(--cherry-red);
+      padding: 10px 20px; border-radius: 50px; cursor: pointer;
+      font-weight: 800; font-size: 0.85rem; color: var(--cherry-red);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s ease;
+    }
+    .audio-btn:hover { background: var(--hot-pink); color: #fff; transform: scale(1.05); }
+
+    /* Main Card Container */
+    .container {
+      width: 90%; max-width: 580px; margin: 40px auto; text-align: center;
+      position: relative; z-index: 10;
+    }
+    .progress-bar-container {
+      width: 100%; height: 8px; background: rgba(122, 0, 22, 0.1);
+      border-radius: 10px; margin-bottom: 12px; overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%; width: 5%; background: linear-gradient(90deg, var(--hot-pink), var(--cherry-red));
+      transition: width 0.4s ease;
+    }
+    .page-indicator {
+      font-size: 0.9rem; font-weight: 800; letter-spacing: 1.5px;
+      color: var(--cherry-red); text-transform: uppercase; margin-bottom: 12px; display: block;
+    }
+
+    /* Pages */
+    .page {
+      display: none; background: var(--paper-card);
+      border: 2px solid rgba(122, 0, 22, 0.15); padding: 32px 22px;
+      border-radius: 28px; box-shadow: 0 15px 35px rgba(122, 0, 22, 0.08);
+      position: relative; backdrop-filter: blur(8px);
+    }
+    .page.active {
+      display: block; animation: paperPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes paperPop {
+      from { opacity: 0; transform: scale(0.92) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Typography */
+    h1 {
+      font-family: 'Shrikhand', cursive; font-size: 2rem; color: var(--cherry-red);
+      margin-bottom: 10px; line-height: 1.2; text-shadow: 2px 2px 0px var(--soft-pink);
+    }
+    .cursive-heading {
+      font-family: 'Caveat', cursive; font-size: 1.8rem; color: var(--hot-pink); margin-bottom: 8px;
+    }
+    p.subtitle { color: #5c4033; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; }
+
+    /* Photo Containers */
+    .photo-frame {
+      position: relative; width: 100%; max-width: 320px; height: 380px; margin: 15px auto;
+      border-radius: 20px; overflow: visible; border: 8px solid #fff;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15); background: #eee;
+    }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+
+    /* Circular Baby Photo Frame */
+    .circular-frame {
+      width: 240px; height: 240px; margin: 20px auto; border-radius: 50%;
+      border: 8px solid #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      position: relative; overflow: visible;
+    }
+    .circular-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+    /* Scrapbook Tape */
+    .tape {
+      position: absolute; width: 90px; height: 26px; background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 30; transform: rotate(-4deg);
+    }
+    .tape-top { top: -12px; left: 30%; }
+
+    /* Navigation Buttons */
+    .btn {
+      background: linear-gradient(135deg, var(--cherry-red), var(--hot-pink));
+      color: white; border: none; padding: 14px 34px; font-size: 0.98rem; font-weight: 800;
+      border-radius: 50px; cursor: pointer; margin-top: 18px;
+      box-shadow: 0 6px 20px rgba(255, 42, 133, 0.3); transition: 0.3s ease;
+    }
+    .btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 8px 25px rgba(255, 42, 133, 0.5); }
+
+    /* Interactive Games */
+    .quiz-options { display: flex; flex-direction: column; gap: 10px; margin: 18px 0; }
+    .option-btn {
+      background: #fff; border: 2px solid var(--soft-pink); color: var(--text-dark);
+      padding: 14px; border-radius: 16px; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; transition: 0.3s ease; text-align: left;
+    }
+    .option-btn:hover { border-color: var(--cherry-red); background: var(--soft-pink); transform: translateX(4px); }
+
+    .compliment-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 18px 0; }
+    .c-card {
+      background: #fff; border: 2px dashed var(--hot-pink); padding: 18px;
+      border-radius: 18px; cursor: pointer; transition: 0.3s ease;
+      font-weight: 800; color: var(--cherry-red); font-size: 0.85rem; min-height: 90px;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+    }
+    .c-card:hover { background: var(--soft-pink); transform: scale(1.03); }
+
+    .gift-box {
+      font-size: 4.8rem; cursor: pointer; margin: 20px auto; display: inline-block;
+      transition: transform 0.3s ease; animation: bounce 1.8s infinite alternate;
+    }
+    @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
+
+    .collage-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 18px 0; }
+    .collage-grid img { width: 100%; height: 140px; object-fit: cover; border-radius: 14px; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+    .letter-box {
+      background: #fff; border: 2px solid var(--soft-pink); padding: 22px;
+      border-radius: 20px; text-align: left; line-height: 1.7; font-size: 0.95rem;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+    }
+
+    /* LARGER CUTE BIRTHDAY CAKE WITH 5 INTERACTIVE CANDLES */
+    .cake-wrapper { 
+      margin: 40px auto 20px; position: relative; width: 260px; height: 210px; 
+    }
+    .cake-base-bottom { 
+      width: 260px; height: 70px; background: linear-gradient(to right, var(--hot-pink), var(--cherry-red)); 
+      border-radius: 22px 22px 12px 12px; position: absolute; bottom: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    }
+    .cake-base-middle { 
+      width: 200px; height: 60px; background: #FFF0F5; 
+      border-radius: 18px 18px 8px 8px; position: absolute; bottom: 65px; left: 30px; 
+      border: 3px solid var(--soft-pink);
+    }
+    .cake-base-top { 
+      width: 140px; height: 50px; background: linear-gradient(to right, #FFB7C5, var(--hot-pink)); 
+      border-radius: 16px 16px 6px 6px; position: absolute; bottom: 120px; left: 60px; 
+    }
+
+    /* 5 Candles Container */
+    .candles-row {
+      position: absolute; top: -30px; left: 8px; width: 124px;
+      display: flex; justify-content: space-between; z-index: 40;
+    }
+    .candle { 
+      width: 12px; height: 42px; cursor: pointer;
+      background: repeating-linear-gradient(45deg, var(--yellow-tag), var(--yellow-tag) 5px, var(--hot-pink) 5px, var(--hot-pink) 10px); 
+      border-radius: 3px; position: relative;
+    }
+    .flame { 
+      width: 16px; height: 22px; background: #ff9e00; position: absolute; top: -20px; left: -2px; 
+      border-radius: 50% 50% 20% 20%; box-shadow: 0 0 15px #ff9e00; animation: flicker 0.5s infinite alternate; 
+    }
+    .flame.off { display: none; }
+    @keyframes flicker { 0% { transform: scale(1); } 100% { transform: scale(1.18); } }
+
+    .ending-text {
+      margin-top: 20px; font-size: 1.15rem; font-weight: 900; color: var(--cherry-red);
+      line-height: 1.5; word-break: break-word; font-family: 'Shrikhand', cursive;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND CONTINUOUS EMOJI SHOWER -->
+  <div class="bg-emoji-container" id="emoji-shower"></div>
+
+  <!-- Audio Control Button -->
+  <audio id="bg-music" loop>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+  <button class="audio-btn" onclick="toggleAudio()">🎵 Play Song 💖</button>
+
+  <div class="container">
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- PAGE 1: COVER / INTRO -->
+    <div class="page active" id="page-1">
+      <span class="page-indicator">💖 Chapter 01 / 20 💖</span>
+      <div class="sticker st-pink" style="top: -12px; left: -5px;">MAIN CHARACTER 💅</div>
+      <div class="cursive-heading">Welcome to your digital memory book...</div>
+      <h1>Wait! Stop Right There 🛑</h1>
+      <p class="subtitle">Who gave you permission to serve this much aura today? Tap below to start!</p>
+      <div class="photo-frame">
+        <div class="tape tape-top"></div>
+        <img src="pic1.jpeg" alt="Pic 1">
+        <div class="sticker st-yellow" style="bottom: 10px; right: -5px;">AURA 10000+ 🔥</div>
+      </div>
+      <button class="btn" onclick="nextPage(2)">Unlock Scrapbook 🗝️</button>
+    </div>
+
+    <!-- PAGE 2: BABY MEMORY (CIRCULAR FRAME) -->
+    <div class="page" id="page-2">
+      <span class="page-indicator">💖 Chapter 02 / 20 💖</span>
+      <div class="sticker st-cherry" style="top: -10px; right: 0;">CUTIE SINCE DAY 1 👶</div>
+      <div class="cursive-heading">Where it all started...</div>
+      <h1>Iconic From The Start ✨</h1>
+      <p class="subtitle">Serving star quality since childhood! Look at this absolute cutie.</p>
+      <div class="circular-frame">
+        <img src="baby.jpeg" alt="Baby Photo">
+        <div class="sticker st-green" style="bottom: -10px; left: 10px;">BORN A DIVA 👑</div>
+      </div>
+      <div class="dotted-path"></div>
+      <button class="btn" onclick="nextPage(3)">Continue Chapter 3 💖</button>
+    </div>
+
+    <!-- PAGE 3: HYPE NOTE 1 -->
+    <div class="page" id="page-3">
+      <span class="page-indicator">💖 Chapter 03 / 20 💖</span>
+      <div class="sticker st-yellow" style="top: 0; left: 0;">SLAYING QUEEN 👑</div>
+      <h1>Serving Pure Excellence 💅</h1>
+      <p class="subtitle">Official reminder: Your vibe, fit, and confidence are literally top tier.</p>
+      <div class="photo-frame">
+        <div class="tape tape-top"></div>
+        <img src="pic2.jpeg" alt="Pic 2">
+      </div>
+      <button class="btn" onclick="nextPage(4)">Next Mystery Chapter 👀</button>
+    </div>
+
+    <!-- PAGE 4: CHATPATE QUIZ 1 -->
+    <div class="page" id="page-4">
+      <span class="page-indicator">💖 Chapter 04 / 20 💖</span>
+      <div class="sticker st-pink" style="top: -10px; right: 10px;">QUIZ TIME 🧠</div>
+      <div class="cursive-heading">A quick reality check...</div>
+      <h1>Who Is The Boss Diva? 💅</h1>
+      <p class="subtitle">Select the correct answer to unlock the next secret page:</p>
+      <div class="quiz-options">
+        <button class="option-btn" onclick="answerQuiz(5)">A) You (No competition) 👑</button>
+        <button class="option-btn" onclick="answerQuiz(5)">B) Still You (1000% aura) 🔥</button>
+        <button class="option-btn" onclick="answerQuiz(5)">C) Both A & B (Facts!) 💖</button>
+      </div>
+    </div>
+
+    <!-- PAGE 5: COMPLIMENT GAME 1 -->
+    <div class="page" id="page-5">
+      <span class="page-indicator">💖 Chapter 05 / 20 💖</span>
+      <div class="sticker st-green" style="top: -10px; left: 0;">MINI GAME 🎮</div>
+      <h1>Tap To Reveal Aura! ✨</h1>
+      <p class="subtitle">Click any box to unlock a hidden compliment custom tailored for you:</p>
+      <div class="compliment-cards">
+        <div class="c-card" onclick="revealCard(this, '👑 100/10 Fashion Icon')">🎁 Tap Me</div>
+        <div class="c-card" onclick="revealCard(this, '✨ Chief Vibe Officer')">🎁 Tap Me</div>
+        <div class="c-card" onclick="revealCard(this, '💖 Pure Sunshine Soul')">🎁 Tap Me</div>
+        <div class="c-card" onclick="revealCard(this, '🔥 Slaying 24/7 Always')">🎁 Tap Me</div>
+      </div>
+      <button class="btn" onclick="nextPage(6)">Proceed To Page 6 ✨</button>
+    </div>
+
+    <!-- PAGE 6: MEMORY SHOWCASE 1 -->
+    <div class="page" id="page-6">
+      <span class="page-indicator">💖 Chapter 06 / 20 💖</span>
+      <div class="sticker st-pink" style="top: 10px; right: 0;">CORE MEMORY 📸</div>
+      <div class="cursive-heading">Looking back at us...</div>
+      <h1>Partners In Crime 👯‍♀️</h1>
+      <p class="subtitle">Every adventure with you instantly turns into an iconic memory!</p>
+      <div class="photo-frame">
+        <div class="tape tape-top"></div>
+        <img src="pic3.jpeg" alt="Memory 1">
+      </div>
+      <button class="btn" onclick="nextPage(7)">Keep Going Bestie 🚀</button>
+    </div>
+
+    <!-- PAGE 7: EMOTIONAL MEMORY PAGE -->
+    <div class="page" id="page-7">
+      <span class="page-indicator">💖 Chapter 07 / 20 💖</span>
+      <div class="sticker st-cherry" style="top: -10px; left: 5%;">SOUL SISTER 🥺</div>
+      <div class="cursive-heading">Deep from the heart...</div>
+      <h1>Through Thick & Thin 💖</h1>
+      <div class="letter-box" style="margin-top: 15px;">
+        <p>From late-night deep talks about life, overanalyzing every little detail, to uncontrolled ugly laughing over inside jokes that no one else gets... 🥺✨</p>
+        <br>
+        <p>Having you as my best friend is my absolute favorite flex. No matter how crazy life gets, you will always be my safe space.</p>
+      </div>
+      <button class="btn" onclick="nextPage(8)">Unlock Next Chapter 🗝️</button>
+    </div>
+
+    <!-- PAGE 8: RELATABLE QUESTION 2 -->
+    <div class="page" id="page-8">
+      <span class="page-indicator">💖 Chapter 08 / 20 💖</span>
+      <div class="sticker st-yellow" style="top: 0; left: 10px;">SPILL THE TEA ☕</div>
+      <h1>Our Hangout Vibe 🍟</h1>
+      <p class="subtitle">What is your favorite thing about when we hang out together?</p>
+      <div class="quiz-options">
+        <button class="option-btn" onclick="answerQuiz(9)">☕ Spilling tea & gossip sessions</button>
+        <button class="option-btn" onclick="answerQuiz(9)">📸 Taking 500 photos to pick 1 masterpiece</button>
+        <button class="option-btn" onclick="answerQuiz(9)">🍟 Eating food & laughing non-stop</button>
+      </div>
+    </div>
+
+    <!-- PAGE 9: HYPE GENERATOR GAME -->
+    <div class="page" id="page-9">
+      <span class="page-indicator">💖 Chapter 09 / 20 💖</span>
+      <div class="sticker st-pink" style="top: -10px; right: 0;">HYPE WHEEL 🎡</div>
+      <h1>The Compliment Machine 🎰</h1>
+      <p class="subtitle">Press the button below to generate instant hype!</p>
+      <div id="compliment-display" style="min-height: 60px; padding: 15px; background: #fff; border-radius: 16px; border: 2px dashed var(--cherry-red); font-weight: 800; color: var(--hot-pink); display: flex; align-items: center; justify-content: center;">
+        Press "Generate Hype" 🔥
+      </div>
+      <button class="btn" onclick="generateCompliment()" style="margin-top: 15px;">Generate Hype 🚀</button>
+      <br>
+      <button class="btn" onclick="nextPage(10)" style="background: transparent; color: var(--cherry-red); border: 2px solid var(--cherry-red); box-shadow: none;">Next Page 👀</button>
+    </div>
+
+    <!-- PAGE 10: SUSPENSE INTERMISSION -->
+    <div class="page" id="page-10">
+      <span class="page-indicator">💖 Chapter 10 / 20 💖</span>
+      <div class="sticker st-green" style="top: 10px; right: 10px;">SUSPENSE 🚨</div>
+      <h1>Halfway There! 😏</h1>
+      <p class="subtitle">You thought we were done? The main surprises are just starting...</p>
+      <div class="photo-frame">
+        <div class="tape tape-top"></div>
+        <img src="pic4.jpeg" alt="Pic 4">
+      </div>
+      <button class="btn" onclick="nextPage(11)">Enter Chapter 11 ✨</button>
+    </div>
+
+    <!-- PAGE 11: HYPE NOTE 2 -->
+    <div class="page" id="page-11">
+      <span class="page-indicator">💖 Chapter 11 / 20 💖</span>
+      <div class="sticker st-pink" style="top: -10px; left: 0;">UNSTOPPABLE 💅</div>
+      <h1>Unmatched Energy ✨</h1>
+      <p class="subtitle">Just an extra reminder that you inspire everyone around you!</p>
+      <div class="photo-frame">
+        <div class="tape tape-top"></div>
+        <img src="pic5.jpeg" alt="Pic 5">
+      </div>
+      <button class="btn" onclick="nextPage(12)">Continue To Chapter 12 💖</button>
+    </div>
+
+    <!-- PAGE 12: MEMORY SHOWCASE 2 -->
+    <div class="page" id="page-12">
+      <span class="page-indicator">💖 Chapter 12 / 20 💖</span>
+      <div class="sticker st-yellow" style="top: 0; right: 0;">GOLDEN TIMES ☀️</div>
+      <div class="cursive-heading">More golden moments...</div>
+      <h1>Making History Together 📸</h1>
+      <p class="subtitle">Can'wait to create a million more memories with you!</p>
+      <div class="photo-frame">
+        <div class="tape tape-top"></div>
+        <img src="pic6.jpeg" alt="Pic 6">
+      </div>
+      <button class="btn" onclick="nextPage(13)">Proceed Forward ✨</button>
+    </div>
+
+    <!-- PAGE 13: RELATABLE QUESTION 3 -->
+    <div class="page" id="page-13">
+      <span class="page-indicator">💖 Chapter 13 / 20 💖</span>
+      <div class="sticker st-cherry" style="top: -10px; left: 5%;">BESTIE TRIVIA 🤔</div>
+      <h1>Who Is More Likely To... 🍿</h1>
+      <p class="subtitle">Be late because they were taking outfit photos for 45 minutes?</p>
+      <div class="quiz-options">
+        <button class="option-btn" onclick="answerQuiz(14)">✨ Definitely YOU (Fashion first!)</button>
+        <button class="option-btn" onclick="answerQuiz(14)">👑 100% You (Priorities matter!)</button>
+      </div>
+    </div>
+
+    <!-- PAGE 14: MEMORY SHOWCASE 3 -->
+    <div class="page" id="page-14">
+      <span class="page-indicator">💖 Chapter 14 / 20 💖</span>
+      <div class="sticker st-pink" style="top: -10px; right: 0;">DIVA STATUS 💅</div>
+      <h1>Always Slaying 👑</h1>
+      <p class="subtitle">No cap, you make every simple day feel special!</p>
+      <div class="photo-frame">
+        <div class="tape tape-top"></div>
+        <img src="pic7.jpeg" alt="Pic 7">
+      </div>
+      <button class="btn" onclick="nextPage(15)">Go To Chapter 15 ✨</button>
+    </div>
+
+    <!-- PAGE 15: MEMORY COLLAGE GRID -->
+    <div class="page" id="page-15">
+      <span class="page-indicator">💖 Chapter 15 / 20 💖</span>
+      <div class="sticker st-green" style="top: -15px; right: 5%;">COLLAGE GRID 🎞️</div>
+      <h1>Our Friendship Mosaic</h1>
+      <p class="subtitle">A quick preview of our happiest chaotic moments!</p>
+      <div class="collage-grid">
+        <img src="collage1.jpeg" alt="Collage 1">
+        <img src="collage2.jpeg" alt="Collage 2">
+        <img src="collage3.jpeg" alt="Collage 3">
+        <img src="collage4.jpeg" alt="Collage 4">
+      </div>
+      <button class="btn" onclick="nextPage(16)">Read Bestie Letter 💌</button>
+    </div>
+
+    <!-- PAGE 16: HEARTFELT LETTER PAGE -->
+    <div class="page" id="page-16">
+      <span class="page-indicator">💖 Chapter 16 / 20 💖</span>
+      <div class="sticker st-pink" style="top: -15px; left: 5%;">FOREVER BFF 💖</div>
+      <div class="letter-box">
+        <h2 style="font-family: 'Caveat', cursive; color: var(--cherry-red); font-size: 2rem;">To My Bestesttt Friend & Diva,</h2>
+        <p>I built this tiny scrapbook corner of the web specifically to remind you how deeply special and loved you are!</p>
+        <br>
+        <p>Thank you for being my anchor, my secret-keeper, my gossip partner, and the absolute highlight of my life. You bring endless joy, chaotic laughter, and unshakeable light everywhere you go.</p>
+        <br>
+        <p>Never change who you are. Keep shining, keep slaying, and keep being the breathtaking queen you were born to be!</p>
+      </div>
+      <button class="btn" onclick="nextPage(17)">Unlock Unwrap Gift 🎁</button>
+    </div>
+
+    <!-- PAGE 17: UNWRAP GIFT EXPERIENCE -->
+    <div class="page" id="page-17">
+      <span class="page-indicator">💖 Chapter 17 / 20 💖</span>
+      <div class="sticker st-yellow" style="top: -10px; right: 10px;">SURPRISE TIME 🎁</div>
+      <div class="cursive-heading">You have 1 unopened gift!</div>
+      <h1>Tap To Unwrap Gift! 🎁</h1>
+      <p class="subtitle">Click the box below to open your birthday surprise:</p>
+      
+      <div class="gift-box" id="gift-box" onclick="openGift()">🎁</div>
+      <p id="gift-status-msg" style="font-weight: 800; color: var(--cherry-red); min-height: 24px;"></p>
+
+      <button class="btn" id="to-cake-btn" style="display: none;" onclick="nextPage(18)">Go To Cake Celebration 🎂</button>
+    </div>
+
+    <!-- PAGE 18: LARGER CAKE WITH 5 CANDLES -->
+    <div class="page" id="page-18">
+      <span class="page-indicator">💖 Chapter 18 / 20 💖</span>
+      <div class="sticker st-pink" style="top: -15px; left: 10%;">MAKE A WISH 🎂</div>
+      <h1>Blow Out All 5 Candles! 🕯️</h1>
+      <p class="subtitle">Tap each candle flame one by one to blow them out!</p>
+
+      <div class="cake-wrapper">
+        <div class="cake-base-top">
+          <!-- 5 INDIVIDUAL CANDLES -->
+          <div class="candles-row">
+            <div class="candle" onclick="blowIndividualCandle(1)"><div class="flame" id="flame-1"></div></div>
+            <div class="candle" onclick="blowIndividualCandle(2)"><div class="flame" id="flame-2"></div></div>
+            <div class="candle" onclick="blowIndividualCandle(3)"><div class="flame" id="flame-3"></div></div>
+            <div class="candle" onclick="blowIndividualCandle(4)"><div class="flame" id="flame-4"></div></div>
+            <div class="candle" onclick="blowIndividualCandle(5)"><div class="flame" id="flame-5"></div></div>
+          </div>
+        </div>
+        <div class="cake-base-middle"></div>
+        <div class="cake-base-bottom"></div>
+      </div>
+
+      <p id="wish-msg" style="margin-top: 20px; font-weight: 800; color: var(--cherry-red); min-height: 24px;">Candles remaining: <span id="candle-count">5</span></p>
+      <button class="btn" id="post-cake-btn" style="display: none;" onclick="nextPage(19)">Proceed To Chapter 19 ✨</button>
+    </div>
+
+    <!-- PAGE 19: FINAL HYPE PHOTO -->
+    <div class="page" id="page-19">
+      <span class="page-indicator">💖 Chapter 19 / 20 💖</span>
+      <div class="sticker st-yellow" style="top: -10px; right: 0;">SLAYING FOREVER 👑</div>
+      <h1>The Ultimate Diva 💖</h1>
+      <p class="subtitle">Here's to a lifetime of laughs, love, and iconic memories!</p>
+      <div class="photo-frame">
+        <div class="tape tape-top"></div>
+        <img src="pic8.jpeg" alt="Final Pic">
+      </div>
+      <button class="btn" onclick="nextPage(20)">View Final Celebration 🎉</button>
+    </div>
+
+    <!-- PAGE 20: GRAND FINALE -->
+    <div class="page" id="page-20">
+      <span class="page-indicator">💖 Chapter 20 / 20 💖</span>
+      <div class="sticker st-pink" style="top: -15px; left: 10%;">BESTIES FOR LIFE ♾️</div>
+      <h1>You Are Loved Forever! 💕</h1>
+      <p class="subtitle">I hope this brought a huge smile to your face. You deserve everything & more!</p>
+
+      <!-- EXACT REQUESTED ENDING LINE -->
+      <div class="ending-text">
+        loveeeeee uhhhhhhhhhhhhh sooooooooooooooo muchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh my divaaaaaaa gurlyyyyyyyyyyyyy 💖✨💅🔥👑
+      </div>
+
+      <button class="btn" onclick="triggerShowerLove()">Shower Extra Love 💖✨</button>
+    </div>
+
+  </div>
+
+  <script>
+    // Continuous Background Shower Effect
+    const emojiShowerContainer = document.getElementById('emoji-shower');
+    const showerEmojis = ['💖', '✨', '🎀', '🌸', '👑', '💅', '💕', '🔥'];
+
+    function createShowerEmoji() {
+      const el = document.createElement('div');
+      el.classList.add('bg-shower-item');
+      el.innerText = showerEmojis[Math.floor(Math.random() * showerEmojis.length)];
+      el.style.left = Math.random() * 95 + 'vw';
+      el.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      emojiShowerContainer.appendChild(el);
+      setTimeout(() => el.remove(), 7000);
+    }
+    setInterval(createShowerEmoji, 350);
+
+    // Background Audio Control
+    const music = document.getElementById('bg-music');
+    let isPlaying = false;
+    function toggleAudio() {
+      const btn = document.querySelector('.audio-btn');
+      if (isPlaying) { music.pause(); btn.innerText = '🎵 Play Song 💖'; }
+      else { music.play(); btn.innerText = '⏸️ Pause Song'; }
+      isPlaying = !isPlaying;
+    }
+
+    // Page Navigation & Progress
+    function nextPage(pageNum) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(`page-${pageNum}`).classList.add('active');
+      document.getElementById('progress-bar').style.width = (pageNum / 20) * 100 + '%';
+      window.scrollTo(0,0);
+    }
+
+    function answerQuiz(nextP) {
+      alert("FACTS ONLY! 💅 Unlocking next chapter...");
+      nextPage(nextP);
+    }
+
+    // Interactive Game Functions
+    function revealCard(el, text) {
+      el.innerText = text;
+      el.style.background = 'var(--soft-pink)';
+      el.style.borderColor = 'var(--cherry-red)';
+    }
+
+    const hypeList = [
+      "✨ Your smile literally lights up the entire room!",
+      "💅 You give off 100% unstoppable boss energy!",
+      "👑 The world revolves around your aura, let's be real.",
+      "🔥 Certified 10/10 best friend & fashion icon!",
+      "💖 Your heart is pure gold and everyone loves you!"
+    ];
+    function generateCompliment() {
+      document.getElementById('compliment-display').innerText = hypeList[Math.floor(Math.random() * hypeList.length)];
+    }
+
+    function openGift() {
+      document.getElementById('gift-box').innerText = '🎉';
+      document.getElementById('gift-status-msg').innerText = "✨ Surprise Unlocked: 10,000+ Aura & Lifetime Friendship! ✨";
+      document.getElementById('to-cake-btn').style.display = 'inline-block';
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
+
+    // 5 Candle Blowing Mechanic
+    let blownCandlesCount = 0;
+    function blowIndividualCandle(index) {
+      const flame = document.getElementById(`flame-${index}`);
+      if (!flame.classList.contains('off')) {
+        flame.classList.add('off');
+        blownCandlesCount++;
+        document.getElementById('candle-count').innerText = 5 - blownCandlesCount;
+        confetti({ particleCount: 30, spread: 40, origin: { y: 0.6 } });
+
+        if (blownCandlesCount === 5) {
+          document.getElementById('wish-msg').innerText = "✨ All 5 candles blown! Wish locked in! 🎉 ✨";
+          document.getElementById('post-cake-btn').style.display = 'inline-block';
+          confetti({ particleCount: 180, spread: 100, origin: { y: 0.6 } });
+        }
+      }
+    }
+
+    function triggerShowerLove() {
+      confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
+    }
+  </script>
+</body>
+</html>
